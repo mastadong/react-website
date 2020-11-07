@@ -56,6 +56,8 @@ export const postComment = (campsiteId, rating, author, text) => dispatch => {
 
 
 
+
+
 export const fetchCampsites = () => dispatch => {
   
     dispatch(campsitesLoading());
@@ -130,7 +132,8 @@ export const fetchPromotions = () => dispatch => {
         }
     )
         .then(response => response.json())
-        .then(promotions => dispatch(addPromotions(promotions)));
+        .then(promotions => dispatch(addPromotions(promotions)))
+        .catch(error => dispatch(promotionsFailed(error.message)));
 };
 
 export const promotionsLoading = () => ({
@@ -184,7 +187,8 @@ export const fetchPartners = () => dispatch => {
         }
     )
         .then(response => response.json())
-        .then(partners => dispatch(addPartners(partners)));
+        .then(partners => dispatch(addPartners(partners)))
+        .catch(error => dispatch(partnersFailed(error.message)));
 };
 
 export const partnersLoading = () => ({
@@ -202,6 +206,42 @@ export const addPartners = partners => ({
 });
 
 
+// FEEDBACK ----------------------------------------------------
+export const postFeedback = (feedback) => dispatch => {
+    
+    // const newComment = {
+    //     campsiteId: campsiteId,
+    //     rating: rating,
+    //     author: author,
+    //     text: text
+    // };
+    // newComment.date = new Date().toISOString();
 
+    return fetch(baseUrl + 'feedback', {
+            method: "POST",
+            body: JSON.stringify(feedback),
+            headers: {
+                "Content-Type": "application/json"
+            }
+        })
+        .then(response => {
+                if (response.ok) {
+                    return response;
+                } else {
+                    const error = new Error(`Error ${response.status}: ${response.statusText}`);
+                    error.response = response;
+                    throw error;
+                }
+            },
+            error => { throw error; }
+        )
+        .then(response => response.json())
+        .then(response => alert('Thank your for your feedback'))
+        //.then(response => dispatch(addComment(response)))
+        .catch(error => {
+            console.log('post feedback', error.message);
+            alert('Your feedback could not be posted\nError: ' + error.message);
+        });
+};
 
 

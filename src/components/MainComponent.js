@@ -8,7 +8,7 @@ import Contact from './ContactComponent';
 import About from './AboutComponent';
 import { Switch, Route, Redirect, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { postComment, fetchCampsites, fetchComments, fetchPromotions, fetchPartners } from '../redux/ActionCreators';
+import { postComment, fetchCampsites, fetchComments, fetchPromotions, fetchPartners, postFeedback } from '../redux/ActionCreators';
 import { actions } from 'react-redux-form';
 
 
@@ -28,7 +28,8 @@ const mapDispatchToProps = {
   resetFeedbackForm: () => (actions.reset('feedbackForm')),
   fetchComments: () => (fetchComments()),
   fetchPromotions: () => (fetchPromotions()),
-  fetchPartners: () => (fetchPartners())
+  fetchPartners: () => (fetchPartners()),
+  postFeedback: () => (postFeedback())
 };
 
 
