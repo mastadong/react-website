@@ -1,5 +1,6 @@
 import * as ActionTypes from './ActionTypes';
 import { CAMPSITES } from '../shared/campsites';
+import { baseUrl } from '../shared/baseUrl';
 
 //The anatomy of an action includes a text property 'type' which corresponds literally to the enumeration type specified in 
 //the 'ActionTypes' file, and a newly created data container object which will be sent to the reducer and used to update the 
@@ -17,15 +18,98 @@ export const addComment = (campsiteId, rating, author, text) => ({
 });
 
 
+
+
 export const fetchCampsites = () => dispatch => {
   
     dispatch(campsitesLoading());
 
-    setTimeout(() => {
-        dispatch(addCampsites(CAMPSITES));
-    }, 2000);
-    
+    return fetch(baseUrl + 'campsites')
+    .then(response => {
+            if (response.ok) {
+                return response;
+            } else {
+                const error = new Error(`Error ${response.status}: ${response.statusText}`);
+                error.response = response;
+                throw error;
+            }
+        },
+        error => {
+            const errMess = new Error(error.message);
+            throw errMess;
+        }
+    )
+    .then(response => response.json())
+    .then(campsites => dispatch(addCampsites(campsites)))
+    .catch(error => dispatch(campsitesFailed(error.message)));
 };
+
+export const fetchComments = () => dispatch => {    
+    return fetch(baseUrl + 'comments')
+        .then(response => {
+                if (response.ok) {
+                    return response;
+                } else {
+                    const error = new Error(`Error ${response.status}: ${response.statusText}`);
+                    error.response = response;
+                    throw error;
+                }
+            },
+            error => {
+                const errMess = new Error(error.message);
+                throw errMess;
+            }
+        )
+        .then(response => response.json())
+        .then(comments => dispatch(addComments(comments)));
+};
+
+export const commentsFailed = errMess => ({
+    type: ActionTypes.COMMENTS_FAILED,
+    payload: errMess
+});
+
+export const addComments = comments => ({
+    type: ActionTypes.ADD_COMMENTS,
+    payload: comments
+});
+
+
+export const fetchPromotions = () => dispatch => {
+    dispatch(promotionsLoading());
+
+    return fetch(baseUrl + 'promotions')
+    .then(response => {
+            if (response.ok) {
+                return response;
+            } else {
+                const error = new Error(`Error ${response.status}: ${response.statusText}`);
+                error.response = response;
+                throw error;
+            }
+        },
+        error => {
+            const errMess = new Error(error.message);
+            throw errMess;
+        }
+    )
+        .then(response => response.json())
+        .then(promotions => dispatch(addPromotions(promotions)));
+};
+
+export const promotionsLoading = () => ({
+    type: ActionTypes.PROMOTIONS_LOADING
+});
+
+export const promotionsFailed = errMess => ({
+    type: ActionTypes.PROMOTIONS_FAILED,
+    payload: errMess
+});
+
+export const addPromotions = promotions => ({
+    type: ActionTypes.ADD_PROMOTIONS,
+    payload: promotions
+});
 
 
 export const campsitesLoading = () => ({
