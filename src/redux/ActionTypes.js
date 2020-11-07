@@ -8,7 +8,11 @@ export const CAMPSITES_FAILED = 'CAMPSITES_FAILED';
 //-------------------------------------------------
 export const ADD_COMMENTS = 'ADD_COMMENTS';
 export const COMMENTS_FAILED = 'COMMENTS_FAILED';
-//-------------------------------------------------
+// PROMOTIONS ---------------------------------------------
 export const PROMOTIONS_LOADING = 'PROMOTIONS_LOADING';
 export const ADD_PROMOTIONS = 'ADD_PROMOTIONS';
 export const PROMOTIONS_FAILED = 'PROMOTIONS_FAILED';
+// PARTNERS -----------------------------------------------
+export const PARTNERS_LOADING = 'PARTNERS_LOADING';
+export const ADD_PARTNERS = 'ADD_PARTNERS';
+export const PARTNERS_FAILED = 'PARTNERS_FAILED';
